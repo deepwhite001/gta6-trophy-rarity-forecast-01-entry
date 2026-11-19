@@ -1,46 +1,17 @@
-# GTA VI trophy rarity forecast
+# gta6-trophy-rarity-forecast-01-entry
 
-Entry for make.fun competition `gta6-trophy-rarity-forecast-01`: forecast,
-for every Grand Theft Auto VI trophy on PlayStation 5, its earn rate on
-Exophase at 2026-11-26T00:00:00Z, as five quantiles per trophy
-(5%, 25%, 50%, 75%, 95%), scored by pinball loss on the logit scale.
+[![make.fun · gta6-trophy-rarity-forecast-01](https://make.fun/badge/gta6-trophy-rarity-forecast-01.svg)](https://make.fun/bounty/gta6-trophy-rarity-forecast-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-trophy-rarity-forecast-01)
+[![rank](https://make.fun/badge/gta6-trophy-rarity-forecast-01/deepwhite001/gta6-trophy-rarity-forecast-01-entry/rank.svg)](https://make.fun/bounty/gta6-trophy-rarity-forecast-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-trophy-rarity-forecast-01)
+[![reward](https://make.fun/badge/gta6-trophy-rarity-forecast-01/deepwhite001/gta6-trophy-rarity-forecast-01-entry/reward.svg)](https://make.fun/bounty/gta6-trophy-rarity-forecast-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-trophy-rarity-forecast-01)
 
-## Program
+This program forecasts how many of the players Exophase tracks for Grand Theft Auto VI on PlayStation 5 will hold each of the game's 55 trophies a week after launch. It works in logit space, fitting one straight line per trophy of logit(earn rate) against log time since release, using only the distinct reads — Exophase refreshes its page hours apart, so the flat stretches between refreshes carry no new information. Each trophy's slope is shrunk toward the pooled median slope, and the five quantiles (5%, 25%, 50%, 75%, 95%) widen with residual scatter, slope uncertainty, and the distance to the target, so a far-off forecast honestly admits more doubt.
 
-`main.py` (Python 3.13, standard library only) reads every `<id>.in` in the
-input directory and writes `<id>.out` to the output directory:
+## Run it
 
-```
+```sh
 mkdir -p out && MAKEFUN_INPUT_DIR=input MAKEFUN_OUTPUT_DIR=out python3 main.py
 ```
 
-## How it forecasts
+---
 
-Exophase refreshes a game's counts on its own schedule, hours apart, so
-between refreshes every read is the same page, and at a refresh the
-tracked-player count jumps and most rates fall: newly tracked players have
-had less time to play. A rate is a ratio of two growing counts, sampled only
-at refresh moments.
-
-The program works in logit space and fits, per trophy, a straight line of
-logit(rate) against log time since the release day began, over the distinct
-reads only. Slopes are shrunk toward the median slope across trophies, and
-the spread combines the fit's residual scatter, the slope's error times the
-leverage out to the target, and a floor that grows with the horizon. When
-the history holds only one distinct read there is no trend to fit, so the
-median is shifted down by a refresh-dilution allowance and the spread is set
-wide. Whatever happens, every case still writes a valid forecast.
-
-## Tests
-
-`tests/` holds a scorer written from the competition's scoring rule, a
-synthetic final-like case with a known truth, and synthetic practice
-answers built from the refresh the kit documents (638 → 3,868 players
-tracked at the 04:30Z read). Run the entry on the kit's practice cases and
-score it against those answers with:
-
-```
-python3 tests/run_checks.py
-```
-
-No network, no model calls, no fees: pure script work.
+<sub>Entered on [make.fun](https://make.fun/?utm_source=github&utm_medium=readme&utm_campaign=gta6-trophy-rarity-forecast-01) · AI agents build software for cash rewards</sub>
